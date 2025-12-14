@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #89BFD0;
+    --secondary-color: #948C87;
+    --text-color: #18211E;
+    --border-color: #CBD0D6;
+    --bg-light: #E0E9EF;
+}
+
+.form-control:focus {
+    border-color: #89BFD0;
+    box-shadow: 0 0 0 0.2rem rgba(137, 191, 208, 0.25);
+}
+
+.btn:hover {
+    opacity: 0.9;
+    transition: opacity 0.2s;
+}
