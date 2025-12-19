@@ -4,9 +4,6 @@ include __DIR__ . '/../db_connection.php';
 try{
     $db = connectDatabase();
 
-    //__________________
-    //1. Create roles table
-
     $db->exec("
 CREATE TABLE IF NOT EXISTS roles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,14 +14,13 @@ CREATE TABLE IF NOT EXISTS roles (
 );
 ");
 
-//insert default roles here
+
     $roles = [
-        //organization level (admin->user->guest)
+
         ['name' => 'ORG_ADMIN', 'type' => 'organization', 'hierarchy_level' => 1],
         ['name' => 'ORG_USER', 'type' => 'organization', 'hierarchy_level' => 2],
         ['name' => 'ORG_GUEST', 'type' => 'organization', 'hierarchy_level' => 3],
 
-        //resource-specific roles (JIT)
         ['name' => 'USER_READER', 'type' => 'resource', 'hierarchy_level' => 99],
         ['name' => 'USER_WRITER', 'type' => 'resource', 'hierarchy_level' => 99]
     ];
@@ -38,9 +34,6 @@ CREATE TABLE IF NOT EXISTS roles (
         ]);
     }
 
-    //----------------
-    //2. Create permissions table
-
     $db->exec("
 CREATE TABLE IF NOT EXISTS permissions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -50,7 +43,6 @@ CREATE TABLE IF NOT EXISTS permissions (
 );
 ");
 
-    //insert default permissions
     $permissions = [
         ['name' => 'view_public', 'description' => 'View public sections (hero, about, navbar)'],
         ['name' => 'view_dashboard', 'description' => 'Access dashboard index.php'],
@@ -66,9 +58,6 @@ CREATE TABLE IF NOT EXISTS permissions (
         ]);
     }
 
-    //--------------
-    //3. Create role_permissions
-
     $db->exec("
 CREATE TABLE IF NOT EXISTS role_permissions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -79,9 +68,6 @@ CREATE TABLE IF NOT EXISTS role_permissions (
     UNIQUE(role_id, permission_id)
 )
 ");
-
-    //-------------
-    //4. Create user_roles
 
     $db->exec("
 CREATE TABLE IF NOT EXISTS user_roles (
@@ -95,8 +81,6 @@ CREATE TABLE IF NOT EXISTS user_roles (
 )
 ");
 
-    //--------------
-    //MAP PERMISSIONS TO ROLE
     function getId($db, $table, $name) {
         $stmt = $db->prepare("SELECT id FROM $table WHERE name = :name");
         $stmt->execute([':name' => $name]);
